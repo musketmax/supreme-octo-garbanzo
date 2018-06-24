@@ -13,6 +13,14 @@ function generateID() {
     return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
 
+function compare(a, b) {
+    if (a.correctAnswers < b.correctAnswers)
+        return -1;
+    if (a.correctAnswers > b.correctAnswers)
+        return 1;
+    return 0;
+}
+
 router.post('/', (req, res, next) => {
     if (req.body.kwizzName && req.body.kwizzName !== null) {
         const newKwizz = new Kwizz({ name: req.body.kwizzName, id: generateID() });
@@ -124,7 +132,6 @@ router.put('/:kwizzId/closeQuestion', (req, res, next) => {
         if (err) return res.status(statusCodes.SERVER_ERROR).json(err.message);
         if (kwizz !== null) {
 
-            let ranking = [];
             const nrQuestions = 12;
 
             kwizz.nrQuestions++;
@@ -137,16 +144,13 @@ router.put('/:kwizzId/closeQuestion', (req, res, next) => {
                     team.correctAnswers++;
                 team.answer = null;
                 team.answerStatus = '#F1F58E';
-
-                if (kwizz.nrQuestions >= nrQuestions)
-                    ranking.push(team);
             });
 
             if (kwizz.nrQuestions >= nrQuestions) {
                 kwizz.nrQuestions = 0;
                 kwizz.teams.forEach((team) => {
-                    const rankingResult = ranking.sort(function (a, b) { return a - b });
-                    console.log(rankingResult)
+
+                    const rankingResult = kwizz.teams.sort(compare);
                     if (team._id === rankingResult[0]._id)
                         team.points += 4;
                     else if (team._id === rankingResult[1]._id)

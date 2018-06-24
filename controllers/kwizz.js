@@ -15,9 +15,9 @@ function generateID() {
 
 function compare(a, b) {
     if (a.correctAnswers < b.correctAnswers)
-        return -1;
-    if (a.correctAnswers > b.correctAnswers)
         return 1;
+    if (a.correctAnswers > b.correctAnswers)
+        return -1;
     return 0;
 }
 

@@ -132,7 +132,7 @@ router.put('/:kwizzId/closeQuestion', (req, res, next) => {
         if (err) return res.status(statusCodes.SERVER_ERROR).json(err.message);
         if (kwizz !== null) {
 
-            const nrQuestions = 12;
+            const nrQuestions = 2;
 
             kwizz.nrQuestions++;
             kwizz.currentQuestion = null;
@@ -148,10 +148,10 @@ router.put('/:kwizzId/closeQuestion', (req, res, next) => {
 
             if (kwizz.nrQuestions >= nrQuestions) {
                 kwizz.nrQuestions = 0;
+                const rankingResult = kwizz.teams.sort(compare);
+                console.log(rankingResult);
+                
                 kwizz.teams.forEach((team) => {
-
-                    const rankingResult = kwizz.teams.sort(compare);
-			        console.log(rankingResult);
                     if (team._id === rankingResult[0]._id)
                         team.points += 4;
                     else if (team._id === rankingResult[1]._id)

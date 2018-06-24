@@ -78,7 +78,7 @@ router.put('/:kwizzId/team/:teamId/question', (req, res, next) => {
     if (req.body.answer && req.body.answer !== null) {
         let change = null;
 
-        if (req.body.change)
+        if (req.body.change === true)
             change = {
                 'teams.$.answer': req.body.answer,
                 'teams.$.answerStatus': '#F1F58E'

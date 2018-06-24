@@ -151,6 +151,7 @@ router.put('/:kwizzId/closeQuestion', (req, res, next) => {
                 kwizz.teams.forEach((team) => {
 
                     const rankingResult = kwizz.teams.sort(compare);
+			        console.log(rankingResult);
                     if (team._id === rankingResult[0]._id)
                         team.points += 4;
                     else if (team._id === rankingResult[1]._id)

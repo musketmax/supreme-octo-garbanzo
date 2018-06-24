@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const db = 'mongodb://musketmax:Lampie159159!@ds161620.mlab.com:61620/kwizzer';
+const db = 'mongodb://localhost/kwizzer';
 mongoose.connect(db)
     .then((mongo) => {
         console.log('Connection with MongoDB established succesfully.');

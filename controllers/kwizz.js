@@ -76,10 +76,20 @@ router.put('/:kwizzId/question/:questionId', (req, res, next) => {
 
 router.put('/:kwizzId/team/:teamId/question', (req, res, next) => {
     if (req.body.answer && req.body.answer !== null) {
-        Kwizz.updateOne({ 'teams._id': req.params.teamId }, {
-            '$set': {
+        let change = null;
+
+        if (req.body.change)
+            change = {
+                'teams.$.answer': req.body.answer,
+                'teams.$.answerStatus': '#F1F58E'
+            };
+        else
+            change = {
                 'teams.$.answer': req.body.answer
-            }
+            };
+
+        Kwizz.updateOne({ 'teams._id': req.params.teamId }, {
+            '$set': change
         }, (err, kwizz) => {
             if (err) return res.status(statusCodes.SERVER_ERROR).json();
             const socket = io.getSocketServer();
